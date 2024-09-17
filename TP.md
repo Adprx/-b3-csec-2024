@@ -541,3 +541,35 @@ drwxr-xr-x  2 efrei_user efrei_user 4096 sept.  17 22:34 ./
 ```bash
 ad@prx:~$ sudo chmod 700 /var/log/efrei_server
 ```
+
+### 4. Security hardening
+🌞 Modifier le .service pour augmenter son niveau de sécurité
+
+- ajoutez au moins 5 clauses dans le fichier pour augmenter le niveau de sécurité de l'application
+- n'utilisez que des clauses que vous comprenez, useless sinon
+
+```bash
+ad@prx:~$ sudo vim /etc/systemd/system/efrei_server.service
+ 17L, 347B written
+ad@prx:~$ sudo cat /etc/systemd/system/efrei_server.service
+[Unit]
+Description=Super serveur EFREI
+
+[Service]
+ExecStart=/home/ad/TP_LEO/efrei_server
+EnvironmentFile=/home/ad/TP_LEO/efrei_server.env
+Restart=always
+User=efrei_user
+Group=efrei_user
+ProtectSystem=yes
+ProtectHome=yes
+NoNewPrivileges=true
+ReadOnlyPaths=/home/ad/TP_LEO
+ReadWritePaths=/var/log/efrei_server
+
+[Install]
+WantedBy=multi-user.target
+
+ad@prx:~$ sudo systemctl daemon-reload
+ad@prx:~$ sudo systemctl restart efrei_server.service
+```
